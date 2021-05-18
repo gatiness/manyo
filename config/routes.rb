@@ -1,3 +1,8 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get 'tasks/_form,'
+  get 'tasks/edit,'
+  get 'tasks/index,'
+  get 'tasks/new,'
+  get 'tasks/show'
+  resources :tasks
 end

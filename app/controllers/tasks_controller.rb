@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :set_task, only: %i[ show edit update destroy ]
 
   def create
     @task = Task.new(task_params)
@@ -10,7 +11,6 @@ class TasksController < ApplicationController
   end
   
   def update
-    @task = Task.find(params[:id])
     if @task.update
       redirect_to tasks_path, notice: "タスクをアップデートしました！"
     else
@@ -22,6 +22,21 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  def index
+    @tasks = Task.all
+  end
+
   def show
   end
+
+  private
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:task_name, :task_description)
+  end
+
 end

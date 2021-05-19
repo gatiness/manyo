@@ -10,9 +10,12 @@ class TasksController < ApplicationController
     end
   end
   
+  def edit
+  end
+
   def update
-    if @task.update
-      redirect_to tasks_path, notice: "タスクをアップデートしました！"
+    if @task.update(task_params)
+      redirect_to task_path, notice: "タスクをアップデートしました！"
     else
       render :new
     end
@@ -29,6 +32,11 @@ class TasksController < ApplicationController
   def show
   end
 
+  def destroy 
+    @task.destroy
+    redirect_to tasks_path, notice: "タスクを削除しました！"
+  end
+
   private
 
   def set_task
@@ -38,5 +46,7 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:task_name, :task_description)
   end
+
+
 
 end

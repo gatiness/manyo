@@ -1,0 +1,9 @@
+<%= form_with(model: @task, local: true) do |f| %>
+  <div class="field">
+    <%= f.label "タスク名" %>
+    <%= f.text_field :task_name %><br>
+    <%= f.label "詳細" %>
+    <%= f.text_field :task_description %><br>
+    <%= f.submit "タスクを作成"%><br><br>
+  </div>
+<% end %>

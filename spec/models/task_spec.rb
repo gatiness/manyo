@@ -1,12 +1,22 @@
 require 'rails_helper'
-
-RSpec.describe Task, type: :model do
-  it "is valid with a task_name, task_description" do
-    task = Task.new
-      task_name 'Manyo Step 1'
-      task_description 'Learn rspec'
-    expect(task). to be_valid
+RSpec.describe 'Task model', type: :model do
+  describe 'validation test' do
+    context 'when task name field is empty' do
+      it 'violates presence validation' do
+        task = Task.new(task_name: '', task_description: 'desc1')
+        expect(task).not_to be_valid
+      end
+    end
+    context 'when task description is empty' do
+      it 'violates presence vailidation' do
+        task = Task.new(task_name: 'task1', task_description: '')
+        expect(task).not_to be_valid
+      end
+    end
+    context 'when task name and description fields are filled' do
+      it 'goes through validation' do
+        task = Task.new(task_name: 'task1', task_description: 'desc1')
+      end
+    end
   end
-it "is invalid without a task_name"
-it "is invalid with task_name of more than 25 or more characters"
-end 
+end      

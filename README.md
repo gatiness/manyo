@@ -1,11 +1,18 @@
 # README
 
-#**Task model:** 
-priority:text, status:text, task_name:string, task_description:string
+**Task model:** 
+|  カラム名  |  データ型  |
+| ---- | ---- |
+|  priority  |  text   |
+|  status  |  text   |
+|  task_name  |  string  |
+|  task_description  |  string   |
 
+**User model:** 
+|  カラム名  |  データ型  |
+| ---- | ---- |
+|  name   |  string   |
+|  email  |  string   |
+|  password_digest  |  string   |
 
-#**Label model:** 
-
-
-#**User model:** 
-name:string, email:string, password_digest:string
+**Label model:** (TBD)

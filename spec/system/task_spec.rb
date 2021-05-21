@@ -1,9 +1,9 @@
 require 'rails_helper'
 RSpec.describe 'Task', type: :system do
+
 describe 'New task' do
   context "when new task gets created" do
     it 'appears in the index page' do
-      
       visit tasks_path
       click_link '新規タスク作成'
       fill_in :task_task_name, with: 'ランチを食べる'
@@ -35,4 +35,17 @@ describe 'Show page' do
     end
   end
 end
+describe 'Index page' do
+  context 'when tasks are listed in descending order' do
+    it 'shows the newest task on top' do
+      task = FactoryBot.create(:task)
+      task2 = FactoryBot.create(:task2)
+      task3 = FactoryBot.create(:task3)
+      visit tasks_path
+      task_list = all('.task')
+      expect(task_list[0]).to have_text ('task3')
+    end
+    end
+  end
 end
+

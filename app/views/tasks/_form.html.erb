@@ -15,8 +15,8 @@
     <%= f.text_field :task_name %><br>
     <%= f.label "詳細" %>
     <%= f.text_field :task_description %><br>
-    <%= f.label "終了期限" %>
-    <%= f.text_field :due_date %><br>
+    <%= f.label "期限" %>
+    <%= f.date_field :due_date %><br>
     <%= f.submit "タスクを作成"%><br><br>
   </div>
 <% end %>

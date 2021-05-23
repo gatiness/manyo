@@ -5,6 +5,7 @@
     <tr>
       <th>タスク名</th>
       <th>詳細</th>
+      <th>期限</th>
       <th></th>
       <th></th>
       <th></th>
@@ -16,6 +17,8 @@
       <tr>
         <td class="task"><%= task.task_name %></td>
         <td><%= task.task_description %></td>
+        <td><%= task.due_date %></td>
+
         <td><%= link_to '詳細', task_path(task) %></td>
           <td><%= link_to '編集', edit_task_path(task) %></td>
           <td><%= link_to '削除', task_path(task), method: :delete, data: { confirm: '本当に消去しますか？' } %></td>

@@ -9,7 +9,8 @@ class TasksController < ApplicationController
       render :new 
     end
   end
-  
+
+
   def edit
   end
 
@@ -26,8 +27,9 @@ class TasksController < ApplicationController
   end
 
   def index
-    @tasks = Task.all
+    # @tasks = Task.all
     @tasks = Task.all.order("id DESC")
+    @tasks = Task.all.order(params[:sort_due_date])
   end
 
   def show
@@ -47,7 +49,4 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:task_name, :task_description, :due_date)
   end
-
-
-
 end

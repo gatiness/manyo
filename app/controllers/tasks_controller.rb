@@ -27,9 +27,20 @@ class TasksController < ApplicationController
   end
 
   def index
-    # @tasks = Task.all
-    @tasks = Task.all.order("id DESC")
-    @tasks = Task.all.order(params[:sort_due_date])
+    if params[:sort_deadline]
+      @tasks = Task.order("due_date ASC")
+    else
+      @tasks = Task.order("id DESC")
+    end
+    if params[:sort_priority]
+      @tasks = Task.order("priority DESC")
+    end
+    if params[:search_name]
+      @tasks = Task.where('name LIKE ?', "%#{params[:search]}%") if params[:search].present?
+    end
+    if params[:status]
+      @tasks = Task.where(status: params[:status])
+    end
   end
 
   def show
@@ -47,6 +58,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:task_name, :task_description, :due_date)
+    params.require(:task).permit(:name, :description, :due_date, :status, :priority)
   end
 end

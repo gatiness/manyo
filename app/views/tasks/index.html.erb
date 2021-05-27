@@ -6,9 +6,9 @@
 
 <%= form_with url: tasks_path, method: :get, local: true do |f| %>
   <%= f.select :status, Task.statuses.keys, include_blank: "ステータス"%>
-  <%= f.submit 'ステータスで検索', name: nil%>
+  <%= f.submit 'ステータスのみで検索', name: nil%>
   <%= f.text_field :search_name %>
-  <%= f.submit 'タスク名で検索', name: nil%>
+  <%= f.submit 'タスク名またはタスク名とステータスで絞り込み検索', name: nil%>
 <% end %>
 
 <p><%= notice %></p>

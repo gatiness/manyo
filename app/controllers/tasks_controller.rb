@@ -26,22 +26,18 @@ class TasksController < ApplicationController
   end
 
   def index
-
-    @tasks = Task.order("id DESC")
-
+    @tasks = Task.order("created_at DESC")
     @tasks = Task.order("due_date ASC") if params[:sort_deadline]
     @tasks = Task.order("priority DESC") if params[:sort_priority]
 
-    # @tasks = @tasks.where('name LIKE ?', "%#{params[:search_name]}%") if params[:search_name].present?
-    # @tasks = Task.where(status: params[:status]) if params[:status].present? && params[:status] != "ステータス"
-
     if params[:search_name].present? && params[:status].present?
-        @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%").where(status: params[:status])
+      @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%").where(status: params[:status])
     elsif params[:search_name].present?
-        @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%")
+      @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%")
     elsif params[:status].present?
       @tasks = Task.where(status: params[:status])
     end
+    @tasks = @tasks.page(params[:page])
   end
 
   def show

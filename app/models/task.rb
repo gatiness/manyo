@@ -4,4 +4,13 @@ class Task < ApplicationRecord
 
   enum priority: { '未選択':0, '低':1, '中':2, '高':3 }
   enum status: { '未着手':0, '着手済':1, '完了':2 }
+  
+  paginates_per 10
 end
+
+# @task = Task.new
+# Task.test
+# @task.test
+
+# [].length
+

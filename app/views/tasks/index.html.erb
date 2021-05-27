@@ -25,7 +25,8 @@
       <th></th>
     </tr>
   </thead>
-
+  
+  
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
@@ -45,3 +46,5 @@
 <br>
 
 <%= link_to '新規タスク作成', new_task_path %>
+
+<%= paginate @tasks %>

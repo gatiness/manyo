@@ -82,9 +82,9 @@
       <tr>
         <td class="task"><%= task.name %></td>
         <td><%= task.description %></td>
-        <td><%= task.due_date %></td>
+        <td class="deadline"><%= task.due_date %></td>
         <td><%= task.priority %></td>
-        <td><%= task.status %></td>
+        <td class="status"><%= task.status %></td>
         <td><%= link_to '詳細', task_path(task) %></td>
           <td><%= link_to '編集', edit_task_path(task) %></td>
           <td><%= link_to '削除', task_path(task), method: :delete, data: { confirm: '本当に消去しますか？' } %></td>

@@ -26,18 +26,21 @@ class TasksController < ApplicationController
   end
 
   def index
-    @tasks = Task.order("created_at DESC")
-    @tasks = Task.order("due_date ASC") if params[:sort_deadline]
-    @tasks = Task.order("priority DESC") if params[:sort_priority]
-
     if params[:search_name].present? && params[:status].present?
-      @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%").where(status: params[:status])
-    elsif params[:search_name].present?
-      @tasks = Task.where('name LIKE ?', "%#{params[:search_name]}%")
-    elsif params[:status].present?
-      @tasks = Task.where(status: params[:status])
+      @tasks = Task.search_name(params[:search_name]).search_status(params[:status])
+      # @tasks = Task.search_name_status(params[:search_name], params[:status])
+    elsif params[:search_name].present? 
+      @tasks = Task.search_name(params[:search_name])
+    elsif params[:status].present? 
+      @tasks = Task.search_status(params[:status])
+    elsif params[:sort_deadline]
+      @tasks = Task.order("due_date ASC") 
+    elsif params[:sort_priority]
+      @tasks = Task.order("priority DESC")
+    else
+      @tasks = Task.order("created_at DESC")
     end
-    @tasks = @tasks.page(params[:page])
+    @tasks = @tasks.page(params[:page]).per(10)
   end
 
   def show
@@ -58,13 +61,3 @@ class TasksController < ApplicationController
     params.require(:task).permit(:name, :description, :due_date, :status, :priority)
   end
 end
-
-
-# def where(title, priority, status)
-# end
-
-# def where(title: '', priority: 0, status: 'pending')
-# end
-
-# Task.where(status: 'pending')
-# Task.all => [@task, @task1, @task2].where(name: 'a') => [@task1, @task2].where

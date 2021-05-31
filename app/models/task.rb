@@ -6,11 +6,11 @@ class Task < ApplicationRecord
   enum status: { '未着手':0, '着手済':1, '完了':2 }
   
   paginates_per 10
+
+  scope :search_name_status, -> (name, status) { where("name LIKE ?", "%#{name}%") && where(status: status)}
+  scope :search_name, -> (name) { where("name LIKE ?", "%#{name}%") }
+  scope :search_status, -> (status) { where(status: status)}
 end
 
-# @task = Task.new
-# Task.test
-# @task.test
 
-# [].length
 

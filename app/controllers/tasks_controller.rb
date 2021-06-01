@@ -9,7 +9,7 @@ class TasksController < ApplicationController
       render :new 
     end
   end
-  
+
   def edit
   end
 
@@ -26,8 +26,21 @@ class TasksController < ApplicationController
   end
 
   def index
-    @tasks = Task.all
-    @tasks = Task.all.order("id DESC")
+    if params[:search_name].present? && params[:status].present?
+      @tasks = Task.search_name(params[:search_name]).search_status(params[:status])
+      # @tasks = Task.search_name_status(params[:search_name], params[:status])
+    elsif params[:search_name].present? 
+      @tasks = Task.search_name(params[:search_name])
+    elsif params[:status].present? 
+      @tasks = Task.search_status(params[:status])
+    elsif params[:sort_deadline]
+      @tasks = Task.order("due_date ASC") 
+    elsif params[:sort_priority]
+      @tasks = Task.order("priority DESC")
+    else
+      @tasks = Task.order("created_at DESC")
+    end
+    @tasks = @tasks.page(params[:page]).per(10)
   end
 
   def show
@@ -45,9 +58,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:task_name, :task_description)
+    params.require(:task).permit(:name, :description, :due_date, :status, :priority)
   end
-
-
-
 end

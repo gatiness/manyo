@@ -1,5 +1,8 @@
 {
   "name": "manyo",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^5.0.0-beta3",
+    "bootstrap-icons": "^1.5.0"
+  }
 }

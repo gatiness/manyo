@@ -1,21 +1,41 @@
-<h1>タスク一覧</h1>
+<div class = "navigation">
+<br>
+<br>
+<br>
+<%= link_to '期限でソート', tasks_path(sort_deadline: "true") %>
+<%= link_to '優先度でソート', tasks_path(sort_priority: "true") %>
+</div>
+
+<%= form_with url: tasks_path, method: :get, local: true do |f| %>
+  <%= f.select :status, Task.statuses.keys, include_blank: "ステータス"%>
+  <%= f.text_field :search_name %>
+  <%= f.submit '検索', name: nil%>
+<% end %>
+
 <p><%= notice %></p>
 <table>
   <thead>
     <tr>
       <th>タスク名</th>
       <th>詳細</th>
+      <th>期限</th>
+      <th>優先度</th>
+      <th>ステータス</th>
       <th></th>
       <th></th>
       <th></th>
     </tr>
   </thead>
-
+  
+  
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
-        <td class="task"><%= task.task_name %></td>
-        <td><%= task.task_description %></td>
+        <td class="task"><%= task.name %></td>
+        <td><%= task.description %></td>
+        <td class="deadline"><%= task.due_date %></td>
+        <td><%= task.priority %></td>
+        <td class="status"><%= task.status %></td>
         <td><%= link_to '詳細', task_path(task) %></td>
           <td><%= link_to '編集', edit_task_path(task) %></td>
           <td><%= link_to '削除', task_path(task), method: :delete, data: { confirm: '本当に消去しますか？' } %></td>
@@ -27,3 +47,5 @@
 <br>
 
 <%= link_to '新規タスク作成', new_task_path %>
+
+<%= paginate @tasks %>

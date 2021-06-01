@@ -5,11 +5,29 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+<body>
+  <!-- Image and text -->
+
+<nav class="navbar fixed-top navbar-light" style="background-color: #F7175E;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><%= image_tag "logo.png", width: 200, class: "d-inline-block align-top" %></a>
+  </div>
+</nav>
+
+<nav class="navbar fixed-bottom navbar-light" style="background-color: #F7175E;">
+  <div class="container-fluid">
+  <p class="navbar-brand" id= "footer">© 2021 NEKOSTAGRAM DEVELOPED BY MACHIKO</p>
+</nav>
+
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
     <%= yield %>
   </body>
 </html>

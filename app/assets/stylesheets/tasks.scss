@@ -25,11 +25,14 @@ foot-nav {
   margin-left: 40%;
 }
 
+.navbar-head {
+  color: pink;
+}
 
 // 以下、Scaffold CSS
 
 body {
-  background-color: #fff;
+  background-color: #F7ADFF;
   color: #333;
   margin: 33px;
   font-family: verdana, arial, helvetica, sans-serif;
@@ -112,3 +115,4 @@ div {
 label {
   display: block;
 }
+

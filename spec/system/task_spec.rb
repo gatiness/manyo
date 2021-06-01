@@ -57,9 +57,9 @@ describe 'Index page' do
     it 'shows matching result' do
       task = FactoryBot.create(:task)
       visit tasks_path
-      select '着手中', from: "status"
+      select '完了', from: "status"
       click_button '検索'
-      expect(page).to have_content '着手中'
+      expect(page).to have_content '完了'
     end
   end
   context 'when fuzzy searched by task name and status' do
@@ -67,7 +67,7 @@ describe 'Index page' do
       task = FactoryBot.create(:task)
       visit tasks_path
       fill_in :search_name_status, with: '7'
-      select '着手中', from: "status"
+      select '完了', from: "status"
       click_button '検索'
       expect(page).to have_content 'task7'
     end

@@ -21,6 +21,7 @@
       <th>期限</th>
       <th>優先度</th>
       <th>ステータス</th>
+      <th>ユーザー名</th>
       <th></th>
       <th></th>
       <th></th>
@@ -36,6 +37,7 @@
         <td class="deadline"><%= task.due_date %></td>
         <td><%= task.priority %></td>
         <td class="status"><%= task.status %></td>
+        <td class="user"><%= user.name %></td>
         <td><%= link_to '詳細', task_path(task) %></td>
           <td><%= link_to '編集', edit_task_path(task) %></td>
           <td><%= link_to '削除', task_path(task), method: :delete, data: { confirm: '本当に消去しますか？' } %></td>

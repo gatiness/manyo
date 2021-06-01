@@ -66,7 +66,7 @@ describe 'Index page' do
     it 'shows matching result' do
       task = FactoryBot.create(:task)
       visit tasks_path
-      fill_in :search_name_status, with: '7'
+      fill_in :search_name, with: '7'
       select '完了', from: "status"
       click_button '検索'
       expect(page).to have_content 'task7'

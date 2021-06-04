@@ -1,8 +1,14 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
+  def new
+    @task = Task.new
+  end
+  
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
+    # @task = Task.new(task_params)
+    # @task.user_id = current_user.id
     if @task.save
       redirect_to tasks_path, notice: "タスクを作成しました！"
     else
@@ -21,24 +27,21 @@ class TasksController < ApplicationController
     end
   end
 
-  def new
-    @task = Task.new
-  end
-
   def index
+    @tasks = Task.where(user_id: current_user.id).includes(:user)
     if params[:search_name].present? && params[:status].present?
-      @tasks = Task.search_name(params[:search_name]).search_status(params[:status])
+      @tasks = current_user.tasks.search_name(params[:search_name]).search_status(params[:status])
       # @tasks = Task.search_name_status(params[:search_name], params[:status])
     elsif params[:search_name].present? 
-      @tasks = Task.search_name(params[:search_name])
+      @tasks = current_user.tasks.search_name(params[:search_name])
     elsif params[:status].present? 
-      @tasks = Task.search_status(params[:status])
+      @tasks = current_user.tasks.search_status(params[:status])
     elsif params[:sort_deadline]
-      @tasks = Task.order("due_date ASC") 
+      @tasks = current_user.tasks.order("due_date ASC") 
     elsif params[:sort_priority]
-      @tasks = Task.order("priority DESC")
+      @tasks = current_user.tasks.order("priority DESC")
     else
-      @tasks = Task.order("created_at DESC")
+      @tasks = current_user.tasks.order("created_at DESC")
     end
     @tasks = @tasks.page(params[:page]).per(10)
   end

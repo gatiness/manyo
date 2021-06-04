@@ -7,12 +7,12 @@ Faker::Config.locale # => :ja
 Faker::Internet.email # => ".@.com"
 
 
-10.times do |i|
+10.times do |n|
   name = Faker::Games::Pokemon.name
   email = Faker::Internet.email
   password = "password"
   User.create!(name: name,
                email: email,
-               password_digest: password,
+               password: password,
                )
 end

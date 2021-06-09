@@ -1,179 +1,140 @@
 require 'rails_helper'
-RSpec.describe 'ユーザー登録機能', type: :system do
-  describe 'ユーザー登録のテスト' do
-    context 'ユーザーを新規作成した場合' do
-      it '作成したユーザーが表示される' do
+
+RSpec.feature 'ユーザ登録テスト', type: :system do
+  let!(:user) { FactoryBot.create(:user) }
+  let!(:admin) { FactoryBot.create(:admin) }
+
+  describe 'ユーザ登録のテスト' do
+    context '新規登録した場合' do
+      it 'ユーザの新規登録ができる' do
         visit new_user_path
-        fill_in "名前", with: "new_user_name"
-        fill_in "メールアドレス", with: "new@example.com"
-        fill_in "パスワード", with: "password"
-        fill_in "確認用パスワード", with: "password"
-        click_on '登録する'
-        expect(page).to have_content 'new_user_name'
-        expect(page).to have_content 'new@example.com'
+        fill_in '名前', with: 'araba'
+        fill_in 'メールアドレス', with: 'aaa@amail.com'
+        fill_in 'パスワード', with: '1111pppp'
+        fill_in '確認用パスワード', with: '1111pppp'
+        click_button 'アカウントを作成'
+        expect(page).to have_content 'arabaのページ'
       end
     end
-    context '未ログインのユーザーがタスク一覧画面に飛んだ場合' do
+
+    context 'ログインせずタスク一覧画面に飛ぼうとした場合' do
       it 'ログイン画面に遷移する' do
         visit tasks_path
-        h2 = find('h2')
-        expect(h2).to have_content 'ログイン'
+        expect(page).to have_content 'Email'
+        expect(page).to have_content 'Password'
       end
     end
-  end
-  describe 'セッション機能のテスト ' do
-    context 'ログインした場合' do
-      it '作成したユーザーが表示される' do
-        user = FactoryBot.create(:user)
+
+    context 'ログインしようとした場合' do
+      it 'ユーザーがログインでき、マイページへ飛べる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user1@example.com"
-        fill_in "パスワード", with: "password1"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        expect(page).to have_content 'test_user1'
-        expect(page).to have_content 'user1@example.com'
+        fill_in 'session[email]', with: 'aaa@amail.com'
+        fill_in 'session[password]', with: '1111pppp'
+        click_button 'Log in'
+        expect(page).to have_content 'arabaのページ'
       end
     end
-    context '他人の詳細画面に飛んだ場合' do
-      it 'タスク一覧画面に遷移する' do
-        user1 = FactoryBot.create(:user)
-        user2 = FactoryBot.create(:admin_user)
+
+    context 'ログアウトしようとした場合' do
+      it 'ログアウトできる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user1@example.com"
-        fill_in "パスワード", with: "password1"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit user_path(user2.id)
-        h2 = find('h2')
-        expect(h2).to have_content 'タスク一覧'
-      end
-    end
-    context 'ログアウトした場合' do
-      it 'ログイン画面に遷移する' do
-        user = FactoryBot.create(:user)
-        visit new_session_path
-        fill_in "メールアドレス", with: "user1@example.com"
-        fill_in "パスワード", with: "password1"
-        within '.actions' do
-          click_on 'ログイン'
-        end
+        fill_in 'session[email]', with: 'aaa@amail.com'
+        fill_in 'session[password]', with: '1111pppp'
+        click_button 'Log in'
         click_on 'ログアウト'
-        expect(page).to have_content 'ログアウトしました'
-        h2 = find('h2')
-        expect(h2).to have_content 'ログイン'
+        expect(page).to have_content 'Log in'
       end
     end
   end
-  describe '管理画面のテスト ' do
-    context '管理ユーザーが管理画面にアクセスした場合' do
-      it '管理画面に遷移する' do
-        user = FactoryBot.create(:admin_user)
+
+  describe '管理画面のテスト' do
+    context '管理者がアクセスした場合' do
+      it '管理画面にアクセスができる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user2@example.com"
-        fill_in "パスワード", with: "password2"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        click_on '管理画面'
-        h2 = find('h2')
-        expect(h2).to have_content '管理画面：ユーザー一覧'
+        fill_in 'session[email]', with: 'aaa@jmail.com'
+        fill_in 'session[password]', with: '1111qqqq'
+        click_button 'Log in'
+        click_link '管理画面'
+        expect(page).to have_content '管理画面：ユーザー一覧'
       end
     end
-    context '一般ユーザーが管理画面にアクセスした場合' do
-      it 'タスク一覧画面に遷移する' do
-        user = FactoryBot.create(:user)
-        visit new_session_path
-        fill_in "メールアドレス", with: "user1@example.com"
-        fill_in "パスワード", with: "password1"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit admin_users_path
+    context 'ユーザーがアクセスした場合' do
+      it '管理画面へは、管理者以外はアクセスできません' do
+        visit new_user_path
+        fill_in '名前', with: 'araba'
+        fill_in 'メールアドレス', with: 'aaa@amail.com'
+        fill_in 'パスワード', with: '1111pppp'
+        fill_in '確認用パスワード', with: '1111pppp'
+        click_button 'アカウントを作成'
+        click_on 'タスク一覧に戻る'
+        click_link '管理画面'
         expect(page).to have_content '管理画面へは、管理者以外はアクセスできません'
-        h2 = find('h2')
-        expect(h2).to have_content 'タスク一覧'
       end
-    end
-    context '管理ユーザーが管理画面でユーザーの新規登録をした場合' do
-      it '管理画面のユーザー詳細ページに遷移する' do
-        user = FactoryBot.create(:admin_user)
+  end
+
+    context '管理者がユーザーを新規登録をした場合' do
+      it '新規登録ができる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user2@example.com"
-        fill_in "パスワード", with: "password2"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit admin_users_path
-        click_on '新しくユーザーを作成する'
-        fill_in "名前", with: "new_user_name"
-        fill_in "メールアドレス", with: "new@example.com"
-        fill_in "パスワード", with: "password"
-        fill_in "確認用パスワード", with: "password"
-        click_on '登録する'
-        expect(page).to have_content 'ユーザー情報を登録しました'
-        h2 = find('h2')
-        expect(h2).to have_content '管理画面：ユーザー情報詳細'
+        fill_in 'session[email]', with: 'aaa@jmail.com'
+        fill_in 'session[password]', with: '1111qqqq'
+        click_button 'Log in'
+        click_on 'タスク一覧に戻る'
+        click_on '管理画面'
+        click_link '新しくユーザーを作成する'
+        fill_in '名前', with: 'test'
+        fill_in 'メールアドレス', with: 'ccc@dic.com'
+        fill_in 'パスワード', with: '123123'
+        fill_in '確認用パスワード', with: '123123'
+        click_button '登録する'
+        expect(page).to have_content 'ID'
+        expect(page).to have_content '管理権限'
       end
     end
-    context '管理ユーザーが管理画面でユーザーの詳細ページに飛んだ場合' do
-      it 'ユーザーの詳細ページに遷移する' do
-        user1 = FactoryBot.create(:user)
-        user2 = FactoryBot.create(:admin_user)
+
+    context '管理者がユーザーの詳細へアクセスをした場合' do
+      it '詳細画面へ飛ぶことができる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user2@example.com"
-        fill_in "パスワード", with: "password2"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit admin_users_path
-        visit admin_user_path(user1.id)
-        h2 = find('h2')
-        expect(h2).to have_content '管理画面：ユーザー情報詳細'
-        expect(page).to have_content 'test_user1'
+        fill_in 'session[email]', with: 'aaa@jmail.com'
+        fill_in 'session[password]', with: '1111qqqq'
+        click_button 'Log in'
+        click_link 'タスク一覧に戻る'
+        click_link '管理画面'
+        click_on '詳細を確認する', match: :first
+        expect(page).to have_content 'ID'
+        expect(page).to have_content '管理権限'
       end
     end
-    context '管理ユーザーが管理画面でユーザーの編集ページに飛んだ場合' do
-      it 'ユーザーの編集ページで情報編集ができる' do
-        user1 = FactoryBot.create(:user)
-        user2 = FactoryBot.create(:admin_user)
+
+    context '管理者がユーザーの編集画面へアクセスをした場合' do
+      it 'ユーザーの編集ができる' do
         visit new_session_path
-        fill_in "メールアドレス", with: "user2@example.com"
-        fill_in "パスワード", with: "password2"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit admin_users_path
-        visit edit_admin_user_path(user1.id)
-        fill_in "名前", with: "update_user_name"
-        fill_in "メールアドレス", with: "update@example.com"
-        fill_in "パスワード", with: "password_update"
-        fill_in "確認用パスワード", with: "password_update"
-        click_on '更新する'
-        expect(page).to have_content 'ユーザー情報を編集しました'
-        h2 = find('h2')
-        expect(h2).to have_content '管理画面：ユーザー情報詳細'
-        expect(page).to have_content 'update_user_name'
+        fill_in 'session[email]', with: 'aaa@jmail.com'
+        fill_in 'session[password]', with: '1111qqqq'
+        click_button 'Log in'
+        click_on 'タスク一覧に戻る'
+        click_on '管理画面'
+        click_on 'ユーザー情報を編集する', match: :first
+        fill_in '名前', with: 'test'
+        fill_in 'メールアドレス', with: 'ccc@dic.com'
+        fill_in 'パスワード', with: '123123'
+        fill_in '確認用パスワード', with: '123123'
+        click_button 'アカウントを作成'
+        expect(page).to have_content 'ID'
+        expect(page).to have_content '管理権限'
       end
     end
-    context '管理ユーザーが管理画面でユーザーの削除ボタンを押した場合' do
+
+    context '管理者がユーザーを削除した場合' do
       it 'ユーザーの削除ができる' do
-        user1 = FactoryBot.create(:user)
-        user2 = FactoryBot.create(:admin_user)
         visit new_session_path
-        fill_in "メールアドレス", with: "user2@example.com"
-        fill_in "パスワード", with: "password2"
-        within '.actions' do
-          click_on 'ログイン'
-        end
-        visit admin_users_path
-        within 'ul li:first-child' do
-          page.accept_confirm do
-            click_on 'ユーザー情報を削除する'
-          end
-        end
-        expect(page).to have_content 'ユーザー情報を削除しました'
+        fill_in 'session[email]', with: 'aaa@jmail.com'
+        fill_in 'session[password]', with: '1111qqqq'
+        click_button 'Log in'
+        click_on 'タスク一覧に戻る'
+        click_on '管理画面'
+        click_on 'ユーザー情報を削除する', match: :first
+        page.driver.browser.switch_to.alert.accept
+        expect(page).to have_content '管理画面：ユーザー一覧'
       end
     end
   end

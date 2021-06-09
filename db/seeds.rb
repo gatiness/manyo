@@ -14,5 +14,16 @@ Faker::Internet.email # => ".@.com"
   User.create!(name: name,
                email: email,
                password: password,
+               admin: false
                )
 end
+
+name = "alien"
+email = "a@a.com"
+password = "111111"
+User.create!(name: name,
+             email: email,
+             password: password,
+             password_confirmation: password,
+             admin: true
+             )

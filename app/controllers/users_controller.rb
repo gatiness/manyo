@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
   before_action :set_user, only: %i[ show ]
-  
+
   def new
     if logged_in?
       redirect_to user_path(current_user.id)
@@ -18,6 +18,9 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update

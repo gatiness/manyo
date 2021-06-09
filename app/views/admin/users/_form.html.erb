@@ -26,13 +26,14 @@
       <%= f.label :password_confirmation %>
       <%= f.password_field :password_confirmation %>
     </div>
-    <div class="field">
-      <%= f.label :admin %>
-      <%= f.select :admin, User.admins.keys %>
-    </div>
     <div class="actions">
       <%= f.submit %>
     </div>
-  <% end %>
+  <%# <% end %> %>
+<%# <%= form_with(model: @user, url: admin_user_path, method: :patch, local: true) do |f| %> %>
+  <%= f.label :admin, "管理者ロールを付与" %>
+  <%= f.check_box :admin, {}, "true", "false" %>
+  <%= f.submit "ロール編集完了" %>
+<% end %>
   <p class="goto_back"><%= link_to "ユーザー一覧画面にもどる", admin_users_path %></p>
 </section> 

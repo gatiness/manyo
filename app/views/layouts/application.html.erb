@@ -22,11 +22,19 @@
 
 <nav class="navbar fixed-bottom navbar-light" style="background-color: #F7175E;">
   <div class="container-fluid">
-  <p class="navbar-brand" id= "footer">© 2021 NEKOSTAGRAM DEVELOPED BY MACHIKO</p>
+  <p class="navbar-brand" id= "footer">© 2021 THE TASK APP DEVELOPED BY MACHIKO</p>
 </nav>
 
     <% flash.each do |key, value| %>
       <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
+    <% if logged_in? %>
+      <%= link_to "マイページ", user_path(current_user.id) %>
+      <%= link_to "ログアウト", session_path(current_user.id), method: :delete %>
+       <%= link_to "管理画面", admin_users_path(current_user.id) %>
+    <% else %>
+      <%= link_to "サインアップ", new_user_path %>
+      <%= link_to "ログイン", new_session_path %>
     <% end %>
     <%= yield %>
   </body>

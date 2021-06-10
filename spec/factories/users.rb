@@ -6,7 +6,7 @@ FactoryBot.define do
     email { "aaa@amail.com" }
     password { "1111pppp" }
     password_confirmation { '1111pppp' }
-    admin { "一般" }
+    admin { "false" }
   end
   # 作成するテストデータの名前を「second_task」とします
   # （存在しないクラス名の名前をつける場合、オプションで「このクラスのテストデータにしてください」と指定します）
@@ -15,6 +15,6 @@ FactoryBot.define do
     email { "aaa@jmail.com" }
     password { "1111qqqq" }
     password_confirmation { '1111qqqq' }
-    admin { "管理者" }
+    admin { "true" }
   end
 end

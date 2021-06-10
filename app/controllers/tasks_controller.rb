@@ -42,6 +42,8 @@ class TasksController < ApplicationController
       @tasks = current_user.tasks.order("priority DESC")
     else
       @tasks = current_user.tasks.order("created_at DESC")
+    if params[:label_id].present?
+      @tasks = current_user.tasks.search_label(params[:label_id] )
     end
     @tasks = @tasks.page(params[:page]).per(10)
   end

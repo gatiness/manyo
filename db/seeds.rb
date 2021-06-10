@@ -27,3 +27,9 @@ User.create!(name: name,
              password_confirmation: password,
              admin: true
              )
+
+10.times do |n|
+    name = Faker::Name.name
+    Label.create!(name: name,
+                 )
+end 

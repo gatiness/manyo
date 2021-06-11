@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
   belongs_to :user
+  has_many :labelings, dependent: :destroy
+	has_many :labels, through: :labelings
 
   validates :name, presence: true, length:{ maximum:25} 
   validates :description, presence: true, length:{ maximum:200} 
@@ -12,6 +14,7 @@ class Task < ApplicationRecord
   scope :search_name_status, -> (name, status) { where("name LIKE ?", "%#{name}%") && where(status: status)}
   scope :search_name, -> (name) { where("name LIKE ?", "%#{name}%") }
   scope :search_status, -> (status) { where(status: status)}
+  scope :search_label, -> (labels) { joins(:labels).where(labels: { id: labels})}
 end
 
 

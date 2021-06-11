@@ -12,21 +12,8 @@ class TasksController < ApplicationController
     else
       if @task.save
         redirect_to tasks_path, notice: "タスクを作成しました！"
-    　else
-        render :new 
-      end
-    end
-  end
-
-  def create
-    @task = current_user.tasks.build(task_params)
-    if params[:back]
-      render :new
-    else
-      if @task.save
-        redirect_to tasks_path, notice: "投稿しました！"
       else
-        render :new
+        render :new 
       end
     end
   end

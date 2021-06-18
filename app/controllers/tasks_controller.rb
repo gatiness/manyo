@@ -7,12 +7,14 @@ class TasksController < ApplicationController
   
   def create
     @task = current_user.tasks.build(task_params)
-    # @task = Task.new(task_params)
-    # @task.user_id = current_user.id
-    if @task.save
-      redirect_to tasks_path, notice: "タスクを作成しました！"
+    if params[:back]
+      render :new
     else
-      render :new 
+      if @task.save
+        redirect_to tasks_path, notice: "タスクを作成しました！"
+      else
+        render :new 
+      end
     end
   end
 
@@ -43,6 +45,9 @@ class TasksController < ApplicationController
     else
       @tasks = current_user.tasks.order("created_at DESC")
     end
+    if params[:label_id].present?
+      @tasks = current_user.tasks.search_label(params[:label_id] )
+    end
     @tasks = @tasks.page(params[:page]).per(10)
   end
 
@@ -61,6 +66,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :description, :due_date, :status, :priority)
+    params.require(:task).permit(:name, :description, :due_date, :status, :priority, {label_ids: [] })
   end
 end

@@ -18,12 +18,29 @@ Faker::Internet.email # => ".@.com"
                )
 end
 
+
 name = "alien"
 email = "a@a.com"
 password = "111111"
-User.create!(name: name,
+user = User.create!(name: name,
              email: email,
              password: password,
              password_confirmation: password,
              admin: true
              )
+
+10.times do |n|
+  Task.create(name: "task#{n}",
+              description: "desc#{n}",
+              due_date: Date.new + n,
+              status: rand(0..2),
+              user_id: user.id
+  )
+end
+
+10.times do |n|
+    name = Faker::Name.name
+    Label.create!(name: name,
+                 )
+end 
+

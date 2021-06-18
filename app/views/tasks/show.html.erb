@@ -10,5 +10,10 @@
 <p>
   <strong>ユーザー名:</strong><%= @task.user.name %>
 </p>
+<p>
+  <strong>ラベル:</strong><% @task.labels.each do |label| %>
+  <%= label.name %>
+  <% end %></p>
+
 <%= link_to '戻る', tasks_path %>
 </body>

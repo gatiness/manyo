@@ -21,6 +21,8 @@
     <%= f.select :priority, Task.priorities.keys %>
     <%= f.label "ステータス" %>
     <%= f.select :status, Task.statuses.keys %>
+    <%= f.label "ラベル" %>
+    <%= f.collection_check_boxes :label_ids, Label.all, :id, :name %>
     <%= f.submit "タスクを作成"%><br><br>
   </div>
 <% end %>
